@@ -1,43 +1,44 @@
 # updater-python
 
-Python updater plugin for Semantic Release.
+PyPI package updater plugin for SemRel.
 
-Updates Python package metadata and versions during Semantic Release.
+Updates Python package versions for projects published to PyPI.
 
 ## Documentation
 
-- Docs (coming soon): <https://github.com/SemRels/semrel/tree/main/docs/plugins/updater-python>
-- Template source: <https://github.com/SemRels/plugin-template>
+- SemRel docs (planned): <https://github.com/SemRels/semrel/tree/main/docs/plugins/updater-python>
+- Plugin template: <https://github.com/SemRels/plugin-template>
+- Registry: <https://registry.semrel.io>
 
 ## Repository Layout
 
-`	ext
+~~~text
 cmd/plugin/              Plugin entry point
 internal/plugin/         Business logic scaffold
 internal/grpc/           gRPC transport scaffold
 proto/v1                 Symlink to the SemRel protobuf contract
 .github/workflows/       CI, release, and security automation
-`
+~~~
 
 ## Development
 
-`ash
+~~~bash
 go build ./cmd/plugin
 go test ./...
-`
+~~~
 
 ## Configuration Example
 
-`yaml
+~~~yaml
 plugins:
   - name: updater-python
     type: updater
     config:
       pyproject_file: pyproject.toml
       version_files:
-        - src/example/__init__.py
-      build_backend: hatchling
-`
+        - src/package/__init__.py
+      repository_url: https://upload.pypi.org/legacy/
+~~~
 
 ## Status
 
