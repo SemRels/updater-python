@@ -18,7 +18,7 @@ type ProviderPlugin struct {
 
 func NewProvider(name string) *ProviderPlugin {
 	if name == "" {
-		name = "replace-me"
+		name = "updater-python"
 	}
 
 	return &ProviderPlugin{name: name}
