@@ -1,6 +1,6 @@
 # updater-python
 
-[![Latest Release](https://img.shields.io/github/v/release/SemRels/updater-python?label=version\&color=blue)](https://github.com/SemRels/updater-python/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/SemRels/updater-python?label=version&color=blue)](https://github.com/SemRels/updater-python/releases/latest)
 
 Updates the Python package version in the selected packaging backend.
 
