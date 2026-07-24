@@ -15,7 +15,11 @@ func TestRunUpdatesPyproject(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.RemoveAll(dir)
+	t.Cleanup(func() {
+		if err := os.RemoveAll(dir); err != nil {
+			t.Errorf("remove temporary directory: %v", err)
+		}
+	})
 
 	file := filepath.Join(dir, "pyproject.toml")
 	if err := os.WriteFile(file, []byte("[project]\nversion = \"1.0.0\"\n"), 0o644); err != nil {
