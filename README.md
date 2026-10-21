@@ -39,19 +39,21 @@ cosign verify ghcr.io/semrels/updater-python:latest \
 
 ```yaml
 plugins:
-  - name: updater-python
-    path: ~/.semrel/plugins/semrel-plugin-updater-python
-    env:
-      SEMREL_PLUGIN_FILE: "pyproject.toml"
-      SEMREL_PLUGIN_BACKEND: "pyproject"
+  - uses: "@semrel/updater-python"
+    phase: pre-tag
+    args:
+      file: "pyproject.toml"
+      backend: "pyproject"
 ```
 
-## `SEMREL_PLUGIN_*` variables
+## Options
 
-| Name | Required | Description | Default |
-| --- | --- | --- | --- |
-| `SEMREL_PLUGIN_FILE` | Optional | Path to the Python packaging file to update. | pyproject.toml |
-| `SEMREL_PLUGIN_BACKEND` | Optional | Backend format used to locate and update the version. | pyproject |
+Every option can be set as an entry under `args` in `.semrel.yaml`. semrel passes each entry to the plugin as the environment variable shown in the table, so you can also set that variable directly (for example in your CI environment) instead of using `args`.
+
+| Argument | Environment variable | Required | Description | Default |
+| --- | --- | --- | --- | --- |
+| `file` | `SEMREL_PLUGIN_FILE` | Optional | Path to the Python packaging file to update. | pyproject.toml |
+| `backend` | `SEMREL_PLUGIN_BACKEND` | Optional | Backend format used to locate and update the version. | pyproject |
 
 ## `SEMREL_*` release context used
 
