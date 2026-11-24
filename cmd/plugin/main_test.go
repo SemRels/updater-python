@@ -46,6 +46,12 @@ func TestRunUpdatesPyproject(t *testing.T) {
 }
 
 func TestRunDryRun(t *testing.T) {
+	for _, value := range []string{"true", "1"} {
+		t.Run(value, func(t *testing.T) { runDryRunTest(t, value) })
+	}
+}
+
+func runDryRunTest(t *testing.T, value string) {
 	t.Parallel()
 
 	file := filepath.Join(t.TempDir(), "pyproject.toml")
@@ -54,10 +60,17 @@ func TestRunDryRun(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	env := map[string]string{"SEMREL_VERSION": "v1.1.0", "SEMREL_PLUGIN_FILE": file, "SEMREL_DRY_RUN": "true"}
+	env := map[string]string{"SEMREL_VERSION": "v1.1.0", "SEMREL_PLUGIN_FILE": file, "SEMREL_DRY_RUN": value}
 	var stdout, stderr bytes.Buffer
 	if code := run(&stdout, &stderr, func(key string) string { return env[key] }); code != 0 {
 		t.Fatalf("run() code = %d stderr = %s", code, stderr.String())
+	}
+	got, err := os.ReadFile(file)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != original {
+		t.Fatalf("dry-run modified file: %s", got)
 	}
 	if !strings.HasPrefix(stderr.String(), "plugin_schema_version=1\n") {
 		t.Fatalf("stderr = %q", stderr.String())
@@ -70,13 +83,6 @@ func TestRunDryRun(t *testing.T) {
 	}
 	if !strings.Contains(stdout.String(), "-version = \"1.0.0\"\n+version = \"1.1.0\"\n") {
 		t.Fatalf("stdout = %q", stdout.String())
-	}
-	got, err := os.ReadFile(file)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if string(got) != original {
-		t.Fatalf("dry-run modified file: %s", got)
 	}
 }
 
